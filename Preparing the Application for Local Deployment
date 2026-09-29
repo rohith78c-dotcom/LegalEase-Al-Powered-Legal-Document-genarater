@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalEase - Local Deployment</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #222;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    header {
+      background: #17365d;
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      color: #17365d;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      margin: 15px 0 8px;
+      color: #2874a6;
+    }
+
+    p {
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin-left: 25px;
+      line-height: 1.8;
+    }
+
+    code {
+      background: #eef1f5;
+      padding: 3px 6px;
+      border-radius: 4px;
+      color: #c0392b;
+    }
+
+    pre {
+      background: #1e1e1e;
+      color: #eee;
+      padding: 18px;
+      border-radius: 7px;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    .success {
+      background: #eaf7ea;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .folder {
+      background: #f8f9fa;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      margin-top: 10px;
+      font-family: monospace;
+      white-space: pre;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>LegalEase</h1>
+    <p>EPIC 5: Deployment – Local Deployment Preparation</p>
+  </header>
+
+  <div class="card">
+    <h2>1. Deployment Objective</h2>
+
+    <p>
+      The objective of this deployment setup is to prepare the
+      LegalEase application for running locally on a developer's
+      computer without requiring a production server.
+    </p>
+
+    <div class="success">
+      The application can be tested locally using a browser and
+      a lightweight local development server.
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>2. Project Structure</h2>
+
+    <p>Recommended LegalEase project structure:</p>
+
+    <div class="folder">
+LegalEase/
+│
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── app.js
+├── assets/
+│   └── images/
+└── README.md
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>3. Local Requirements</h2>
+
+    <ul>
+      <li>Windows, macOS or Linux computer</li>
+      <li>Modern web browser</li>
+      <li>Visual Studio Code or any code editor</li>
+      <li>Optional: Node.js for local development server</li>
+      <li>Internet connection for optional external resources</li>
+    </ul>
+  </div>
+
+
+  <div class="card">
+    <h2>4. Local Deployment Using Browser</h2>
+
+    <p>
+      For a simple static version of LegalEase, the application
+      can be opened directly from the project folder.
+    </p>
+
+    <ol>
+      <li>Open the LegalEase project folder.</li>
+      <li>Locate <code>index.html</code>.</li>
+      <li>Double-click the file.</li>
+      <li>The application will open in the default browser.</li>
+      <li>Test the document preview and export functionality.</li>
+    </ol>
+  </div>
+
+
+  <div class="card">
+    <h2>5. Local Deployment Using VS Code</h2>
+
+    <p>
+      The recommended development method is to use Visual Studio Code
+      with a local development extension such as Live Server.
+    </p>
+
+    <ol>
+      <li>Open Visual Studio Code.</li>
+      <li>Select <b>File → Open Folder</b>.</li>
+      <li>Select the LegalEase project folder.</li>
+      <li>Open <code>index.html</code>.</li>
+      <li>Start the local development server.</li>
+      <li>Open the generated localhost address in the browser.</li>
+    </ol>
+
+    <h3>Example Local Address</h3>
+
+    <pre>http://127.0.0.1:5500/</pre>
+  </div>
+
+
+  <div class="card">
+    <h2>6. Deployment Using Node.js</h2>
+
+    <p>
+      If Node.js is installed, a lightweight local HTTP server
+      can be used to serve the application.
+    </p>
+
+    <h3>Check Node.js</h3>
+
+    <pre>node --version</pre>
+
+    <h3>Start Local Server</h3>
+
+    <pre>npx serve .</pre>
+
+    <p>
+      After starting the server, open the localhost URL shown
+      in the terminal.
+    </p>
+  </div>
+
+
+  <div class="card">
+    <h2>7. Local Testing Checklist</h2>
+
+    <ul>
+      <li>Application loads successfully.</li>
+      <li>Navigation works correctly.</li>
+      <li>Legal document form accepts user input.</li>
+      <li>Dynamic preview updates correctly.</li>
+      <li>Print/PDF functionality works.</li>
+      <li>JSON export works.</li>
+      <li>Responsive layout works on smaller screens.</li>
+      <li>No major browser console errors are present.</li>
+    </ul>
+  </div>
+
+
+  <div class="card">
+    <h2>8. Deployment Status</h2>
+
+    <div class="success">
+      <strong>Local Deployment Ready</strong>
+      <p>
+        LegalEase is structured as a locally deployable frontend
+        application and can be tested using a browser or local
+        development server.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
