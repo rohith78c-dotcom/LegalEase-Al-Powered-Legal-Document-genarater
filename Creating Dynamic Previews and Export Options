@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LegalEase - Dynamic Preview & Export</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #222;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #17365d;
+      margin-bottom: 25px;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      color: #17365d;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 11px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+
+    .preview-btn {
+      background: #17365d;
+    }
+
+    .pdf-btn {
+      background: #c0392b;
+    }
+
+    .json-btn {
+      background: #2874a6;
+    }
+
+    .print-btn {
+      background: #555;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .document-preview {
+      border: 1px solid #ddd;
+      padding: 35px;
+      min-height: 500px;
+      background: #fff;
+      line-height: 1.7;
+    }
+
+    .document-preview h3 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #17365d;
+      text-transform: uppercase;
+    }
+
+    .document-preview .field {
+      margin-bottom: 15px;
+    }
+
+    .document-preview .field strong {
+      display: inline-block;
+      min-width: 130px;
+    }
+
+    .signature {
+      margin-top: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #eaf2f8;
+      color: #21618c;
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      body {
+        padding: 15px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .form-section,
+      .buttons,
+      h1 {
+        display: none;
+      }
+
+      .app {
+        display: block;
+      }
+
+      .card {
+        box-shadow: none;
+      }
+
+      .document-preview {
+        border: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>LegalEase – Legal Document Generator</h1>
+
+    <div class="app">
+
+      <!-- INPUT FORM -->
+      <div class="card form-section">
+
+        <h2>Document Details</h2>
+
+        <label for="documentType">Document Type</label>
+        <select id="documentType">
+          <option value="Legal Agreement">Legal Agreement</option>
+          <option value="Rental Agreement">Rental Agreement</option>
+          <option value="Affidavit">Affidavit</option>
+          <option value="Notice">Legal Notice</option>
+        </select>
+
+        <label for="partyOne">First Party</label>
+        <input
+          type="text"
+          id="partyOne"
+          placeholder="Enter first party name"
+        />
+
+        <label for="partyTwo">Second Party</label>
+        <input
+          type="text"
+          id="partyTwo"
+          placeholder="Enter second party name"
+        />
+
+        <label for="date">Date</label>
+        <input type="date" id="date" />
+
+        <label for="description">Agreement / Legal Description</label>
+        <textarea
+          id="description"
+          placeholder="Enter legal agreement details..."
+        ></textarea>
+
+        <div class="buttons">
+          <button class="preview-btn" onclick="updatePreview()">
+            Update Preview
+          </button>
+
+          <button class="pdf-btn" onclick="exportPDF()">
+            Export PDF
+          </button>
+
+          <button class="json-btn" onclick="exportJSON()">
+            Export JSON
+          </button>
+
+          <button class="print-btn" onclick="printDocument()">
+            Print
+          </button>
+        </div>
+
+        <div id="status" class="status"></div>
+
+      </div>
+
+
+      <!-- DYNAMIC PREVIEW -->
+      <div class="card">
+
+        <h2>Live Document Preview</h2>
+
+        <div id="documentPreview" class="document-preview">
+
+          <h3>Legal Agreement</h3>
+
+          <div class="field">
+            <strong>First Party:</strong>
+            <span id="previewPartyOne">Not provided</span>
+          </div>
+
+          <div class="field">
+            <strong>Second Party:</strong>
+            <span id="previewPartyTwo">Not provided</span>
+          </div>
+
+          <div class="field">
+            <strong>Date:</strong>
+            <span id="previewDate">Not provided</span>
+          </div>
+
+          <hr />
+
+          <p id="previewDescription">
+            Legal agreement details will appear here.
+          </p>
+
+          <div class="signature">
+            <div>
+              _______________________<br />
+              First Party
+            </div>
+
+            <div>
+              _______________________<br />
+              Second Party
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    // Update the preview dynamically
+    function updatePreview() {
+
+      const documentType =
+        document.getElementById("documentType").value;
+
+      const partyOne =
+        document.getElementById("partyOne").value;
+
+      const partyTwo =
+        document.getElementById("partyTwo").value;
+
+      const date =
+        document.getElementById("date").value;
+
+      const description =
+        document.getElementById("description").value;
+
+      document.querySelector(".document-preview h3")
+        .textContent = documentType;
+
+      document.getElementById("previewPartyOne")
+        .textContent = partyOne || "Not provided";
+
+      document.getElementById("previewPartyTwo")
+        .textContent = partyTwo || "Not provided";
+
+      document.getElementById("previewDate")
+        .textContent =
+        date ? formatDate(date) : "Not provided";
+
+      document.getElementById("previewDescription")
+        .textContent =
+        description ||
+        "Legal agreement details will appear here.";
+
+      showStatus("Preview updated successfully.");
+    }
+
+
+    // Format date
+    function formatDate(dateString) {
+
+      const date = new Date(dateString);
+
+      return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+
+    // Export document as PDF using browser print
+    function exportPDF() {
+
+      updatePreview();
+
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+
+
+    // Export data as JSON
+    function exportJSON() {
+
+      const data = {
+        documentType:
+          document.getElementById("documentType").value,
+
+        firstParty:
+          document.getElementById("partyOne").value,
+
+        secondParty:
+          document.getElementById("partyTwo").value,
+
+        date:
+          document.getElementById("date").value,
+
+        description:
+          document.getElementById("description").value
+      };
+
+      const jsonData =
+        JSON.stringify(data, null, 2);
+
+      const blob =
+        new Blob([jsonData], {
+          type: "application/json"
+        });
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const link =
+        document.createElement("a");
+
+      link.href = url;
+      link.download = "legalease-document.json";
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+
+      showStatus("JSON file exported successfully.");
+    }
+
+
+    // Print document
+    function printDocument() {
+
+      updatePreview();
+
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+
+
+    // Status message
+    function showStatus(message) {
+
+      const status =
+        document.getElementById("status");
+
+      status.textContent = message;
+      status.style.display = "block";
+
+      setTimeout(() => {
+        status.style.display = "none";
+      }, 2500);
+    }
+
+
+    // Real-time preview
+    const fields = [
+      "documentType",
+      "partyOne",
+      "partyTwo",
+      "date",
+      "description"
+    ];
+
+    fields.forEach(id => {
+
+      document.getElementById(id)
+        .addEventListener("input", updatePreview);
+
+      document.getElementById(id)
+        .addEventListener("change", updatePreview);
+
+    });
+
+  </script>
+
+</body>
+</html>
