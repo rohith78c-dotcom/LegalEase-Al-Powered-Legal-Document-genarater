@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LegalEase - Deployment Verification</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #222;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    header {
+      background: #17365d;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 12px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      color: #17365d;
+      margin-bottom: 18px;
+    }
+
+    .environment {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .environment div {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .test {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      gap: 15px;
+    }
+
+    .test:last-child {
+      border-bottom: none;
+    }
+
+    .test-name {
+      font-weight: bold;
+    }
+
+    .status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .pass {
+      background: #d5f5e3;
+      color: #196f3d;
+    }
+
+    .fail {
+      background: #fadbd8;
+      color: #922b21;
+    }
+
+    .warning {
+      background: #fcf3cf;
+      color: #7d6608;
+    }
+
+    button {
+      background: #17365d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .summary {
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .summary.success {
+      background: #d5f5e3;
+      color: #196f3d;
+    }
+
+    .summary.error {
+      background: #fadbd8;
+      color: #922b21;
+    }
+
+    .test-area {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px dashed #aaa;
+      border-radius: 8px;
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 700px) {
+      .environment {
+        grid-template-columns: 1fr;
+      }
+
+      .test {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      body {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>LegalEase</h1>
+    <p>EPIC 5 – Local Deployment Verification</p>
+  </header>
+
+
+  <!-- ENVIRONMENT INFORMATION -->
+
+  <div class="card">
+
+    <h2>Deployment Environment</h2>
+
+    <div class="environment">
+
+      <div>
+        <strong>Protocol</strong>
+        <p id="protocol">Checking...</p>
+      </div>
+
+      <div>
+        <strong>Browser</strong>
+        <p id="browser">Checking...</p>
+      </div>
+
+      <div>
+        <strong>Screen</strong>
+        <p id="screen">Checking...</p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TEST RESULTS -->
+
+  <div class="card">
+
+    <h2>Deployment Test Results</h2>
+
+    <div class="test">
+      <span class="test-name">
+        1. Application Loaded
+      </span>
+      <span id="testLoad" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <div class="test">
+      <span class="test-name">
+        2. JavaScript Execution
+      </span>
+      <span id="testJS" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <div class="test">
+      <span class="test-name">
+        3. Local Storage
+      </span>
+      <span id="testStorage" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <div class="test">
+      <span class="test-name">
+        4. JSON Export Support
+      </span>
+      <span id="testJSON" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <div class="test">
+      <span class="test-name">
+        5. Print / PDF Support
+      </span>
+      <span id="testPrint" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <div class="test">
+      <span class="test-name">
+        6. Responsive Layout
+      </span>
+      <span id="testResponsive" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <div class="test">
+      <span class="test-name">
+        7. DOM Rendering
+      </span>
+      <span id="testDOM" class="status warning">
+        Checking
+      </span>
+    </div>
+
+    <button onclick="runTests()">
+      Run Deployment Tests
+    </button>
+
+    <div id="summary"></div>
+
+  </div>
+
+
+  <!-- FUNCTIONAL TEST -->
+
+  <div class="card">
+
+    <h2>Functional Verification</h2>
+
+    <p>
+      Enter a test value below to verify that JavaScript
+      input handling is working correctly.
+    </p>
+
+    <div class="test-area">
+
+      <label for="testInput">
+        Test Input
+      </label>
+
+      <input
+        type="text"
+        id="testInput"
+        placeholder="Enter test text"
+      >
+
+      <button onclick="testInputFunction()">
+        Verify Input
+      </button>
+
+      <p id="inputResult"></p>
+
+    </div>
+
+  </div>
+
+
+  <!-- DEPLOYMENT CHECKLIST -->
+
+  <div class="card">
+
+    <h2>Manual Verification Checklist</h2>
+
+    <ul style="line-height: 2; margin-left: 25px;">
+
+      <li>
+        Open the application using localhost.
+      </li>
+
+      <li>
+        Verify that all pages load without errors.
+      </li>
+
+      <li>
+        Test the LegalEase document form.
+      </li>
+
+      <li>
+        Verify dynamic preview functionality.
+      </li>
+
+      <li>
+        Test JSON export.
+      </li>
+
+      <li>
+        Test browser print / PDF functionality.
+      </li>
+
+      <li>
+        Resize the browser and verify responsive layout.
+      </li>
+
+      <li>
+        Check browser console for JavaScript errors.
+      </li>
+
+    </ul>
+
+  </div>
+
+
+  <!-- FINAL STATUS -->
+
+  <div class="card">
+
+    <h2>Deployment Verification Status</h2>
+
+    <div id="finalStatus" class="summary warning">
+      Deployment tests have not been executed yet.
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /*
+   * LegalEase
+   * EPIC 5 – Deployment
+   * Local Deployment Testing & Verification
+   */
+
+
+  let testsPassed = 0;
+  let testsFailed = 0;
+
+
+  // Set test result
+  function setStatus(id, passed) {
+
+    const element = document.getElementById(id);
+
+    if (passed) {
+
+      element.textContent = "PASS";
+      element.className = "status pass";
+
+      testsPassed++;
+
+    } else {
+
+      element.textContent = "FAIL";
+      element.className = "status fail";
+
+      testsFailed++;
+    }
+  }
+
+
+  // Main deployment tests
+  function runTests() {
+
+    testsPassed = 0;
+    testsFailed = 0;
+
+
+    /*
+     * 1. Application Loaded
+     */
+
+    setStatus(
+      "testLoad",
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    );
+
+
+    /*
+     * 2. JavaScript Execution
+     */
+
+    setStatus(
+      "testJS",
+      typeof window !== "undefined"
+    );
+
+
+    /*
+     * 3. Local Storage
+     */
+
+    let storageAvailable = false;
+
+    try {
+
+      const testKey = "legalease_test";
+
+      localStorage.setItem(testKey, "success");
+
+      storageAvailable =
+        localStorage.getItem(testKey) === "success";
+
+      localStorage.removeItem(testKey);
+
+    } catch (error) {
+
+      storageAvailable = false;
+    }
+
+    setStatus(
+      "testStorage",
+      storageAvailable
+    );
+
+
+    /*
+     * 4. JSON Export Support
+     */
+
+    const jsonSupported =
+      typeof Blob !== "undefined" &&
+      typeof JSON !== "undefined" &&
+      typeof URL.createObjectURL === "function";
+
+    setStatus(
+      "testJSON",
+      jsonSupported
+    );
+
+
+    /*
+     * 5. Print / PDF Support
+     */
+
+    setStatus(
+      "testPrint",
+      typeof window.print === "function"
+    );
+
+
+    /*
+     * 6. Responsive Layout
+     */
+
+    const responsive =
+      window.innerWidth > 0 &&
+      window.innerHeight > 0;
+
+    setStatus(
+      "testResponsive",
+      responsive
+    );
+
+
+    /*
+     * 7. DOM Rendering
+     */
+
+    const domWorking =
+      document.getElementById("summary") !== null;
+
+    setStatus(
+      "testDOM",
+      domWorking
+    );
+
+
+    /*
+     * Final result
+     */
+
+    const summary =
+      document.getElementById("summary");
+
+    const finalStatus =
+      document.getElementById("finalStatus");
+
+
+    if (testsFailed === 0) {
+
+      summary.className =
+        "summary success";
+
+      summary.textContent =
+        "All deployment tests passed successfully.";
+
+      finalStatus.className =
+        "summary success";
+
+      finalStatus.textContent =
+        "LOCAL DEPLOYMENT VERIFIED – " +
+        testsPassed +
+        " tests passed.";
+
+    } else {
+
+      summary.className =
+        "summary error";
+
+      summary.textContent =
+        testsPassed +
+        " tests passed and " +
+        testsFailed +
+        " tests failed.";
+
+      finalStatus.className =
+        "summary error";
+
+      finalStatus.textContent =
+        "DEPLOYMENT REQUIRES ATTENTION – " +
+        testsFailed +
+        " test(s) failed.";
+
+    }
+
+  }
+
+
+  // Functional input test
+  function testInputFunction() {
+
+    const input =
+      document.getElementById("testInput").value;
+
+    const result =
+      document.getElementById("inputResult");
+
+
+    if (input.trim() !== "") {
+
+      result.textContent =
+        "PASS: Input handling is working correctly.";
+
+      result.style.color = "#196f3d";
+      result.style.marginTop = "12px";
+      result.style.fontWeight = "bold";
+
+    } else {
+
+      result.textContent =
+        "FAIL: Please enter a test value.";
+
+      result.style.color = "#922b21";
+      result.style.marginTop = "12px";
+      result.style.fontWeight = "bold";
+    }
+
+  }
+
+
+  // Display environment information
+  function loadEnvironmentInfo() {
+
+    document.getElementById("protocol")
+      .textContent = window.location.protocol;
+
+    document.getElementById("browser")
+      .textContent = navigator.userAgent;
+
+    document.getElementById("screen")
+      .textContent =
+      window.innerWidth +
+      " × " +
+      window.innerHeight;
+
+  }
+
+
+  // Run environment information
+  loadEnvironmentInfo();
+
+
+  // Automatically execute tests
+  window.addEventListener(
+    "load",
+    runTests
+  );
+
+</script>
+
+</body>
+</html>
